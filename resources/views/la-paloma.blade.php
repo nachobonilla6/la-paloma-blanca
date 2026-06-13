@@ -30,9 +30,9 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
   @php
-    $features = json_decode($content->feature_list ?? '[]', true);
-    $lifeHighlights = json_decode($content->life_highlights ?? '[]', true);
-    $beachHighlights = json_decode($content->beach_highlights ?? '[]', true);
+    $features = $content->feature_list ?? [];
+    $lifeHighlights = $content->life_highlights ?? [];
+    $beachHighlights = $content->beach_highlights ?? [];
   @endphp
 
   <!-- Google Tag Manager (noscript) -->
