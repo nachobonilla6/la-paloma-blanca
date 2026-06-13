@@ -23,7 +23,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('panel')
+            ->id('admin')
             ->path('panel')
             ->login()
             ->colors([
