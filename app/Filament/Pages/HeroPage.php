@@ -49,7 +49,15 @@ class HeroPage extends Page
     public function save(): void
     {
         $content = PropertyContent::firstOrCreate([], ['is_active' => true]);
-        $content->update($this->form->getState());
+        $state = $this->form->getState();
+        
+        // Separar los campos de Spatie (colecciones) de los campos normales
+        $normalFields = collect($state)->except(['hero'])->toArray();
+        $content->update($normalFields);
+        
+        // Spatie media library guarda automáticamente cuando se usa el uploader
+        // con el modelo correcto en el formulario
+        
         $this->notify('success', 'Hero section updated!');
     }
 
