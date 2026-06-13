@@ -11,5 +11,8 @@ class PropertyContent extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'feature_list' => 'array',
+        'life_highlights' => 'array',
+        'beach_highlights' => 'array',
     ];
 }
