@@ -16,7 +16,7 @@ class AmenityResource extends Resource
 {
     protected static ?string $model = Amenity::class;
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
-    protected static ?string $navigationGroup = 'La Paloma Blanca';
+    protected static ?string $navigationGroup = 'Property';
     protected static ?string $navigationLabel = 'Amenities';
     protected static ?string $slug = 'la-paloma/amenities';
 
@@ -27,9 +27,9 @@ class AmenityResource extends Resource
                 Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('icon')
-                            ->label('Icono (FontAwesome)')
+                            ->label('Icon (FontAwesome)')
                             ->placeholder('fas fa-swimmer')
-                            ->helperText('Busca iconos en ')
+                            ->helperText('Search icons at ')
                             ->suffixAction(
                                 \Filament\Forms\Components\Actions\Action::make('fontawesome')
                                     ->icon('heroicon-m-arrow-top-right-on-square')
@@ -41,20 +41,20 @@ class AmenityResource extends Resource
                             ->reactive()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('title')
-                            ->label('Título')
+                            ->label('Title')
                             ->required()
                             ->maxLength(255),
                     ]),
                 Forms\Components\Textarea::make('description')
-                    ->label('Descripción')
+                    ->label('Description')
                     ->rows(2),
                 Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('sort_order')
-                            ->label('Orden')
+                            ->label('Order')
                             ->numeric()
                             ->default(0),
-                        Forms\Components\Toggle::make('is_active')->label('Activo')->default(true),
+                        Forms\Components\Toggle::make('is_active')->label('Active')->default(true),
                     ]),
             ]);
     }
@@ -64,12 +64,12 @@ class AmenityResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('icon')
-                    ->label('Icono')
+                    ->label('Icon')
                     ->html()
                     ->formatStateUsing(fn ($state) => '<i class="' . $state . '"></i> ' . e($state))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('title')->label('Título')->searchable(),
-                Tables\Columns\TextColumn::make('sort_order')->label('Orden')->sortable(),
+                Tables\Columns\TextColumn::make('title')->label('Title')->searchable(),
+                Tables\Columns\TextColumn::make('sort_order')->label('Order')->sortable(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->defaultSort('sort_order')

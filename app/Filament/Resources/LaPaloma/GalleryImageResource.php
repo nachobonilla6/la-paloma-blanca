@@ -14,8 +14,8 @@ class GalleryImageResource extends Resource
 {
     protected static ?string $model = GalleryImage::class;
     protected static ?string $navigationIcon = 'heroicon-o-photo';
-    protected static ?string $navigationGroup = 'La Paloma Blanca';
-    protected static ?string $navigationLabel = 'Galería de Fotos';
+    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationLabel = 'Photo Gallery';
     protected static ?string $slug = 'la-paloma/galeria';
 
     public static function form(Form $form): Form
@@ -23,17 +23,17 @@ class GalleryImageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('image_path')
-                    ->label('URL de la imagen')
+                    ->label('Image URL')
                     ->required()
                     ->maxLength(500),
                 Forms\Components\TextInput::make('alt_text')
-                    ->label('Texto alternativo')
+                    ->label('Alt text')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('sort_order')
-                    ->label('Orden')
+                    ->label('Order')
                     ->numeric()
                     ->default(0),
-                Forms\Components\Toggle::make('is_active')->label('Activa')->default(true),
+                Forms\Components\Toggle::make('is_active')->label('Active')->default(true),
             ]);
     }
 
@@ -41,9 +41,9 @@ class GalleryImageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')->label('Foto')->size(60),
-                Tables\Columns\TextColumn::make('alt_text')->label('Descripción')->limit(30),
-                Tables\Columns\TextColumn::make('sort_order')->label('Orden')->sortable(),
+                Tables\Columns\ImageColumn::make('image_path')->label('Photo')->size(60),
+                Tables\Columns\TextColumn::make('alt_text')->label('Description')->limit(30),
+                Tables\Columns\TextColumn::make('sort_order')->label('Order')->sortable(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->defaultSort('sort_order')

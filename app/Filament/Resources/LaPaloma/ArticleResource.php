@@ -14,8 +14,8 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-    protected static ?string $navigationGroup = 'La Paloma Blanca';
-    protected static ?string $navigationLabel = 'Artículos';
+    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationLabel = 'Articles';
     protected static ?string $slug = 'la-paloma/articulos';
 
     public static function form(Form $form): Form
@@ -23,16 +23,16 @@ class ArticleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('source')
-                    ->label('Fuente')
+                    ->label('Source')
                     ->placeholder('National Geographic')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('title')
-                    ->label('Título')
+                    ->label('Title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->label('Descripción')
+                    ->label('Description')
                     ->rows(2),
                 Forms\Components\TextInput::make('url')
                     ->label('URL')
@@ -40,10 +40,10 @@ class ArticleResource extends Resource
                     ->required()
                     ->maxLength(500),
                 Forms\Components\TextInput::make('sort_order')
-                    ->label('Orden')
+                    ->label('Order')
                     ->numeric()
                     ->default(0),
-                Forms\Components\Toggle::make('is_active')->label('Activo')->default(true),
+                Forms\Components\Toggle::make('is_active')->label('Active')->default(true),
             ]);
     }
 
@@ -51,9 +51,9 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('source')->label('Fuente'),
-                Tables\Columns\TextColumn::make('title')->label('Título')->limit(40)->searchable(),
-                Tables\Columns\TextColumn::make('sort_order')->label('Orden')->sortable(),
+                Tables\Columns\TextColumn::make('source')->label('Source'),
+                Tables\Columns\TextColumn::make('title')->label('Title')->limit(40)->searchable(),
+                Tables\Columns\TextColumn::make('sort_order')->label('Order')->sortable(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->defaultSort('sort_order')
