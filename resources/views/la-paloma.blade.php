@@ -10,11 +10,11 @@
   <!-- End Google Tag Manager -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ $content->meta_title ?? 'La Paloma Blanca – Beachfront Condo for Sale, South Jaco' }}</title>
-  <meta name="description" content="{{ $content->meta_description ?? '2-bed, 2-bath beachfront condo for sale at La Paloma Blanca in South Jaco, Costa Rica.' }}" />
+  <title>{{ $content->meta_title ?? 'La Paloma Blanca – Beachfront Condo for Sale, South Jacó' }}</title>
+  <meta name="description" content="{{ $content->meta_description ?? '2-bed, 2-bath beachfront condo for sale at La Paloma Blanca in South Jacó, Costa Rica.' }}" />
   <meta property="og:title" content="La Paloma Blanca – Beachfront Condo for Sale" />
-  <meta property="og:description" content="2-bed, 2-bath beachfront condo in South Jaco, Costa Rica. Direct beach access." />
-  <meta property="og:image" content="{{ $images[0]->image_path ?? '/lp-photos/beach-sunset2.jpeg' }}" />
+  <meta property="og:description" content="2-bed, 2-bath beachfront condo in South Jacó, Costa Rica. Direct beach access." />
+  <meta property="og:image" content="{{ $images[0]->image_path ?? '/la-paloma/photos/beach-sunset2.jpeg' }}" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0d2818" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌴</text></svg>" />
@@ -31,9 +31,12 @@
     $beachHighlights = json_decode($content->beach_highlights ?? '[]', true);
   @endphp
 
+  <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FLRSK9H"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
+  <!-- ===== NAV ===== -->
   <nav id="navbar">
     <div class="nav-inner">
       <span class="nav-logo">La Paloma Blanca <span class="nav-logo-tag">For Sale</span></span>
@@ -51,14 +54,15 @@
     </div>
   </nav>
 
+  <!-- ===== HERO ===== -->
   <section class="hero" id="hero">
     <div class="hero-overlay"></div>
     <div class="hero-bg-scroll"></div>
     <div class="hero-content">
-      <div class="hero-badge animate-fade-in">{{ $content->hero_badge ?? 'For Sale - Owned by William' }}</div>
+      <div class="hero-badge animate-fade-in">{{ $content->hero_badge ?? 'For Sale — Owned by William' }}</div>
       <h1 class="animate-fade-in-up">{{ $content->hero_title ?? 'Beachfront Condo' }}<br /><span class="hero-accent">{{ $content->hero_accent ?? 'La Paloma Blanca' }}</span></h1>
-      <p class="hero-subtitle animate-fade-in-up">{{ $content->hero_subtitle ?? 'South Jaco, Costa Rica' }}</p>
-      <p class="hero-tagline animate-fade-in-up">{!! nl2br(e($content->hero_tagline ?? '2 Bedrooms - 2 Bathrooms - Approx. 1,000 sq ft')) !!}</p>
+      <p class="hero-subtitle animate-fade-in-up">{{ $content->hero_subtitle ?? 'South Jacó, Costa Rica' }}</p>
+      <p class="hero-tagline animate-fade-in-up">{!! nl2br(e($content->hero_tagline ?? '2 Bedrooms • 2 Bathrooms • Approx. 1,000 sq ft')) !!}</p>
       <div class="hero-actions animate-fade-in-up">
         <a href="#details" class="btn btn-primary">Explore</a>
         <a href="#contact" class="btn btn-outline">Schedule a Viewing</a>
@@ -70,13 +74,17 @@
     </div>
   </section>
 
+  <!-- ===== DETAILS ===== -->
   <section id="details" class="section">
     <div class="container">
       <div class="section-header animate-on-scroll">
         <span class="section-label">The Property</span>
         <h2>Beachfront Condo for Sale</h2>
-        @if($content->details_intro)<p class="section-intro">{{ $content->details_intro }}</p>@endif
+        @if($content->details_intro)
+          <p class="section-intro">{{ $content->details_intro }}</p>
+        @endif
       </div>
+
       <div class="details-grid">
         <div class="details-text animate-on-scroll">
           <h3 class="details-subtitle">Property Features</h3>
@@ -90,30 +98,60 @@
             <ul class="feature-list">
               <li><i class="fas fa-bed"></i> 2 spacious bedrooms</li>
               <li><i class="fas fa-bath"></i> 2 full bathrooms</li>
-              <li><i class="fas fa-vector-square"></i> Approximately 1,000 sq ft</li>
+              <li><i class="fas fa-vector-square"></i> Approximately 1,000 sq ft of living space</li>
               <li><i class="fas fa-car"></i> Dedicated owner parking</li>
               <li><i class="fas fa-shield-alt"></i> 24-hour gated security</li>
               <li><i class="fas fa-swimmer"></i> Four swimming pools</li>
-              <li><i class="fas fa-leaf"></i> Tropical gardens</li>
+              <li><i class="fas fa-leaf"></i> Tropical gardens throughout the property</li>
               <li><i class="fas fa-umbrella-beach"></i> Direct beach access</li>
+              <li><i class="fas fa-chart-line"></i> Strong rental and investment potential</li>
             </ul>
           @endif
-          @if($content->details_description)<p>{{ $content->details_description }}</p>@endif
+          @if($content->details_description)
+            <p>{{ $content->details_description }}</p>
+          @endif
           <a href="#contact" class="btn btn-primary">Schedule a Viewing</a>
         </div>
         <div class="details-image animate-on-scroll">
-          <img src="{{ $images[0]->image_path ?? '/lp-photos/pool.jpeg' }}" alt="Pool area" />
+          <img src="{{ $images[0]->image_path ?? '/la-paloma/photos/pool.jpeg' }}" alt="Pool area at La Paloma Blanca" />
         </div>
       </div>
+
+      @if($content->life_title || $content->life_text)
+      <div class="life-section animate-on-scroll">
+        <h3>{{ $content->life_title ?? 'Life at La Paloma Blanca' }}</h3>
+        @if($content->life_text)<p>{{ $content->life_text }}</p>@endif
+        @if(!empty($lifeHighlights))
+        <div class="life-highlights">
+          @foreach($lifeHighlights as $item)
+          <div class="life-item">
+            <i class="{{ $item['icon'] ?? 'fas fa-check' }} life-icon"></i>
+            <span>{{ $item['text'] ?? '' }}</span>
+          </div>
+          @endforeach
+        </div>
+        @endif
+      </div>
+      @endif
+
+      @if($content->surf_title || $content->surf_text)
+      <div class="surf-section animate-on-scroll">
+        <h3>{{ $content->surf_title ?? "A Surfer's Paradise" }}</h3>
+        @if($content->surf_text)<p>{{ $content->surf_text }}</p>@endif
+      </div>
+      @endif
     </div>
   </section>
 
+  <!-- ===== AMENITIES ===== -->
   <section id="amenities" class="section section-alt">
     <div class="container">
       <div class="section-header animate-on-scroll">
         <span class="section-label">Complex Amenities</span>
         <h2>{{ $content->amenities_title ?? 'Resort-Style Living' }}</h2>
-        @if($content->amenities_intro)<p class="section-intro">{{ $content->amenities_intro }}</p>@endif
+        @if($content->amenities_intro)
+          <p class="section-intro">{{ $content->amenities_intro }}</p>
+        @endif
       </div>
       <div class="amenities-grid">
         @forelse($amenities as $amenity)
@@ -126,22 +164,22 @@
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-swimmer"></i></div>
           <h3>4 Swimming Pools</h3>
-          <p>Four beautifully maintained pools.</p>
+          <p>Four beautifully maintained pools surrounded by tropical gardens.</p>
         </div>
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-shield-alt"></i></div>
           <h3>24/7 Security</h3>
-          <p>Gated entry with round-the-clock security.</p>
+          <p>Gated entry with round-the-clock security personnel.</p>
         </div>
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-leaf"></i></div>
           <h3>Tropical Gardens</h3>
-          <p>Lush walkways and mature landscaping.</p>
+          <p>Lush walkways and mature landscaping throughout the complex.</p>
         </div>
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-car"></i></div>
           <h3>Owner Parking</h3>
-          <p>Dedicated parking space included.</p>
+          <p>Dedicated parking space included with the unit.</p>
         </div>
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-umbrella-beach"></i></div>
@@ -151,13 +189,14 @@
         <div class="amenity-card animate-on-scroll">
           <div class="amenity-icon-wrap"><i class="fas fa-sun"></i></div>
           <h3>Sunset Views</h3>
-          <p>Incredible Pacific sunsets.</p>
+          <p>Incredible Pacific sunsets from the complex.</p>
         </div>
         @endforelse
       </div>
     </div>
   </section>
 
+  <!-- ===== GALLERY ===== -->
   <section id="gallery" class="section">
     <div class="container">
       <div class="section-header animate-on-scroll">
@@ -177,6 +216,7 @@
     </div>
   </section>
 
+  <!-- ===== VIDEO TOUR ===== -->
   <section id="video" class="section section-alt">
     <div class="container">
       <div class="section-header animate-on-scroll">
@@ -185,26 +225,27 @@
         @if($content->video_intro)<p class="section-intro">{{ $content->video_intro }}</p>@endif
       </div>
       <div class="video-grid">
-        @if($content->video_1_src)
+        @if($content->video_1_src ?? false)
         <div class="video-card animate-on-scroll">
           <video controls poster="{{ $images[0]->image_path ?? '' }}">
             <source src="{{ $content->video_1_src }}" type="video/mp4" />
           </video>
-          @if($content->video_1_label)<p class="video-label">{{ $content->video_1_label }}</p>@endif
+          @if($content->video_1_label)<p class="video-label"><i class="fas fa-road"></i> {{ $content->video_1_label }}</p>@endif
         </div>
         @endif
-        @if($content->video_2_src)
+        @if($content->video_2_src ?? false)
         <div class="video-card animate-on-scroll">
           <video controls poster="{{ $images[1]->image_path ?? '' }}">
             <source src="{{ $content->video_2_src }}" type="video/mp4" />
           </video>
-          @if($content->video_2_label)<p class="video-label">{{ $content->video_2_label }}</p>@endif
+          @if($content->video_2_label)<p class="video-label"><i class="fas fa-building"></i> {{ $content->video_2_label }}</p>@endif
         </div>
         @endif
       </div>
     </div>
   </section>
 
+  <!-- ===== THE BEACH ===== -->
   <section id="beach" class="section">
     <div class="container">
       <div class="section-header animate-on-scroll">
@@ -212,6 +253,7 @@
         <h2>Your New Backyard</h2>
         @if($content->beach_intro)<p class="section-intro">{{ $content->beach_intro }}</p>@endif
       </div>
+
       <div class="beach-content">
         @if($content->beach_text_1 || $content->beach_text_2)
         <div class="beach-text animate-on-scroll">
@@ -220,10 +262,11 @@
         </div>
         @endif
         <div class="beach-images animate-on-scroll">
-          <img src="{{ $images[2]->image_path ?? $images[0]->image_path ?? '' }}" alt="Beach sunset" />
-          <img src="{{ $images[3]->image_path ?? $images[1]->image_path ?? '' }}" alt="Beach front" />
+          <img src="{{ $images[2]->image_path ?? $images[0]->image_path ?? '' }}" alt="Sunset at South Jacó beach" />
+          <img src="{{ $images[3]->image_path ?? $images[1]->image_path ?? '' }}" alt="Street leading to the beach" />
         </div>
       </div>
+
       @if(!empty($beachHighlights))
       <div class="beach-highlights animate-on-scroll">
         <h3>{{ $content->beach_highlights_title ?? 'Beach Highlights' }}</h3>
@@ -234,12 +277,14 @@
         </div>
       </div>
       @endif
+
       @if($content->surfing_title || $content->surfing_text)
       <div class="beach-subsection animate-on-scroll">
         <h3>{{ $content->surfing_title ?? 'Surfing' }}</h3>
         <p>{{ $content->surfing_text ?? '' }}</p>
       </div>
       @endif
+
       @if($content->sunset_title || $content->sunset_text)
       <div class="beach-subsection animate-on-scroll">
         <h3>{{ $content->sunset_title ?? 'Sunset Views' }}</h3>
@@ -249,6 +294,7 @@
     </div>
   </section>
 
+  <!-- ===== ARTICLES ===== -->
   <section id="articles" class="section section-alt">
     <div class="container">
       <div class="section-header animate-on-scroll">
@@ -270,23 +316,27 @@
     </div>
   </section>
 
+  <!-- ===== CONTACT ===== -->
   <section id="contact" class="section">
     <div class="container">
       <div class="section-header animate-on-scroll">
         <span class="section-label">Get in Touch</span>
         <h2>{{ $content->contact_title ?? 'Interested in This Property?' }}</h2>
-        <p class="section-intro">This is my personal unit - I am selling it directly, no agents involved.</p>
+        <p class="section-intro">
+          This is my personal unit — I'm selling it directly, no agents involved.
+          Reach out anytime for more information or to schedule a private viewing.
+        </p>
       </div>
       <div class="contact-grid">
         <div class="contact-card animate-on-scroll">
           <div class="contact-card-icon"><i class="fas fa-map-marker-alt"></i></div>
           <h3>Location</h3>
-          <p>La Paloma Blanca<br />South Jaco, Costa Rica</p>
+          <p>La Paloma Blanca<br />South Jacó, Costa Rica</p>
         </div>
         <div class="contact-card animate-on-scroll">
           <div class="contact-card-icon"><i class="fas fa-user"></i></div>
           <h3>Owner</h3>
-          <p>{{ $content->owner_name ?? 'William' }}<br />Direct from owner</p>
+          <p>{{ $content->owner_name ?? 'William' }}<br />Direct from owner, no agents</p>
         </div>
         <div class="contact-card animate-on-scroll">
           <div class="contact-card-icon"><i class="fas fa-envelope"></i></div>
@@ -302,12 +352,13 @@
     </div>
   </section>
 
+  <!-- ===== FOOTER ===== -->
   <footer>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <h4>La Paloma Blanca</h4>
-          <p>South Jaco, Costa Rica</p>
+          <p>South Jacó, Costa Rica</p>
         </div>
         <div class="footer-links">
           <a href="#details">Details</a>
@@ -316,21 +367,23 @@
           <a href="#contact">Contact</a>
         </div>
         <div class="footer-contact">
-          <p>{{ $content->owner_name ?? 'William' }} - Owner</p>
+          <p>{{ $content->owner_name ?? 'William' }} — Owner</p>
           <a href="mailto:{{ $content->contact_email ?? 'willishel77@gmail.com' }}">{{ $content->contact_email ?? 'willishel77@gmail.com' }}</a>
           <a href="tel:{{ $content->contact_phone ?? '+184****0404' }}">{{ $content->contact_phone ?? '+1 845 943 0404' }}</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; {{ date('Y') }} La Paloma Blanca - All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} La Paloma Blanca &mdash; All rights reserved.</p>
       </div>
     </div>
   </footer>
 
+  <!-- WhatsApp Floating Button -->
   <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $content->contact_whatsapp ?? '+184****0404') }}?text=Hi%20William%2C%20I'm%20interested%20in%20your%20condo%20at%20La%20Paloma%20Blanca" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="Contact via WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
 
+  <!-- Lightbox -->
   <div id="lightbox" class="lightbox hidden">
     <span class="lightbox-close">&times;</span>
     <button class="lightbox-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
