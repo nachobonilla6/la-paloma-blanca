@@ -25,11 +25,9 @@ class VisitsByCountryChart extends ChartWidget
                 [
                     'label' => 'Visits',
                     'data' => $countries->pluck('total'),
-                    'backgroundColor' => [
-                        '#0ea5e9', '#8b5cf6', '#f59e0b', '#10b981',
-                        '#ef4444', '#ec4899', '#14b8a6', '#f97316',
-                        '#6366f1', '#84cc16',
-                    ],
+                    'backgroundColor' => '#10b981',
+                    'borderColor' => '#059669',
+                    'borderWidth' => 2,
                 ],
             ],
             'labels' => $countries->pluck('country')->map(fn ($c) => $c ?: 'Unknown'),

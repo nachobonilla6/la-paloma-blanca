@@ -44,18 +44,31 @@ class DailyVisitsChart extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar';
+        return 'line';
     }
 
     protected function getOptions(): array
     {
         return [
+            'elements' => [
+                'line' => [
+                    'tension' => 0.3,
+                ],
+                'point' => [
+                    'radius' => 3,
+                ],
+            ],
             'scales' => [
                 'y' => [
                     'beginAtZero' => true,
                     'ticks' => [
                         'stepSize' => 1,
                     ],
+                ],
+            ],
+            'plugins' => [
+                'filler' => [
+                    'propagate' => false,
                 ],
             ],
         ];
