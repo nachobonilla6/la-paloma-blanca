@@ -15,6 +15,7 @@ class SeoPage extends Page
     protected static ?string $navigationLabel = 'SEO';
     protected static ?string $slug = 'site/seo';
     protected static ?string $title = 'SEO Settings';
+    protected static string $view = 'filament.pages.hero';
 
     public ?array $data = [];
 

@@ -15,6 +15,7 @@ class DetailsPage extends Page
     protected static ?string $navigationLabel = 'Details';
     protected static ?string $slug = 'site/details';
     protected static ?string $title = 'Details Section';
+    protected static string $view = 'filament.pages.hero';
 
     public ?array $data = [];
 

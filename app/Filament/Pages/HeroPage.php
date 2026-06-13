@@ -15,6 +15,7 @@ class HeroPage extends Page
     protected static ?string $navigationLabel = 'Hero';
     protected static ?string $slug = 'site/hero';
     protected static ?string $title = 'Hero Section';
+    protected static string $view = 'filament.pages.hero';
 
     public ?array $data = [];
 

@@ -15,6 +15,7 @@ class BeachPage extends Page
     protected static ?string $navigationLabel = 'Beach';
     protected static ?string $slug = 'site/beach';
     protected static ?string $title = 'Beach Section';
+    protected static string $view = 'filament.pages.hero';
 
     public ?array $data = [];
 

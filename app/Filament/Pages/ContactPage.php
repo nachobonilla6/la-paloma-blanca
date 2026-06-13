@@ -14,6 +14,7 @@ class ContactPage extends Page
     protected static ?string $navigationLabel = 'Contact';
     protected static ?string $slug = 'site/contact';
     protected static ?string $title = 'Contact Section';
+    protected static string $view = 'filament.pages.hero';
 
     public ?array $data = [];
 
