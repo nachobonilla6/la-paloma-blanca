@@ -10,7 +10,7 @@ class DailyVisitsChart extends ChartWidget
 {
     protected static ?string $heading = 'Daily Visits (Last 15 Days)';
     protected static ?string $pollingInterval = null;
-    protected int | string | array $columnSpan = 2;
+    protected int | string | array $columnSpan = 8;
 
     protected function getData(): array
     {
