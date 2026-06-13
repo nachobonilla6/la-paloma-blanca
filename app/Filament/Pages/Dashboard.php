@@ -22,4 +22,9 @@ class Dashboard extends BaseDashboard
             \App\Filament\Widgets\VisitsByCountryChart::class,
         ];
     }
+
+    public function getColumns(): int | array
+    {
+        return 12;
+    }
 }
