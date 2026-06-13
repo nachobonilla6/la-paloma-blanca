@@ -1,0 +1,1 @@
+<?php namespace App\Models\LaPaloma; use Illuminate\Database\Eloquent\Model; class Amenity extends Model { protected \$table = 'amenities'; protected \$guarded = []; protected \$casts = ['is_active' => 'boolean']; }
