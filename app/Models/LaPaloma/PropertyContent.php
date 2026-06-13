@@ -3,9 +3,13 @@
 namespace App\Models\LaPaloma;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class PropertyContent extends Model
+class PropertyContent extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $table = 'property_contents';
     protected $guarded = [];
 

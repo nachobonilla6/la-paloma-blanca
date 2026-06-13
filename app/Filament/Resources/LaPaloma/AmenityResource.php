@@ -6,7 +6,7 @@ use App\Filament\Resources\LaPaloma\AmenityResource\Pages;
 use App\Models\LaPaloma\Amenity;
 use Filament\Forms;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Html;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,6 +24,16 @@ class AmenityResource extends Resource
     {
         return $form
             ->schema([
+                Grid::make(2)
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('photo')
+                            ->label('Photo')
+                            ->collection('amenity-photos')
+                            ->image()
+                            ->imagePreviewHeight('120')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->columnSpanFull(),
+                    ]),
                 Grid::make(2)
                     ->schema([
                         Forms\Components\TextInput::make('icon')

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LaPaloma;
 use App\Filament\Resources\LaPaloma\PropertyContentResource\Pages;
 use App\Models\LaPaloma\PropertyContent;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -26,10 +27,17 @@ class PropertyContentResource extends Resource
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Hero')
                             ->schema([
+                                SpatieMediaLibraryFileUpload::make('hero')
+                                    ->label('Hero Background Image')
+                                    ->collection('hero')
+                                    ->image()
+                                    ->imagePreviewHeight('200')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->columnSpanFull(),
                                 Forms\Components\TextInput::make('hero_badge')->label('Badge')->maxLength(255),
-                                Forms\Components\TextInput::make('hero_title')->label('Título')->maxLength(255),
-                                Forms\Components\TextInput::make('hero_accent')->label('Texto destacado')->maxLength(255),
-                                Forms\Components\TextInput::make('hero_subtitle')->label('Subtítulo')->maxLength(255),
+                                Forms\Components\TextInput::make('hero_title')->label('Title')->maxLength(255),
+                                Forms\Components\TextInput::make('hero_accent')->label('Accent text')->maxLength(255),
+                                Forms\Components\TextInput::make('hero_subtitle')->label('Subtitle')->maxLength(255),
                                 Forms\Components\Textarea::make('hero_tagline')->label('Tagline')->rows(2),
                             ]),
                         Forms\Components\Tabs\Tab::make('Details')
