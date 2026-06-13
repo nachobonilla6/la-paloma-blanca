@@ -4,7 +4,6 @@ namespace App\Filament\Widgets;
 
 use App\Models\PageView;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Facades\DB;
 
 class DailyVisitsChart extends ChartWidget
 {
@@ -20,7 +19,6 @@ class DailyVisitsChart extends ChartWidget
             ->orderBy('date')
             ->pluck('total', 'date');
 
-        // Rellenar días sin visitas con 0
         $labels = [];
         $values = [];
         for ($i = 14; $i >= 0; $i--) {

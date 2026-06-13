@@ -37,6 +37,8 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 \App\Filament\Widgets\LaPalomaStats::class,
+                \App\Filament\Widgets\DailyVisitsChart::class,
+                \App\Filament\Widgets\VisitsByCountryChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
