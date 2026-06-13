@@ -9,6 +9,7 @@ class VisitsByCountryChart extends ChartWidget
 {
     protected static ?string $heading = 'Visits by Country';
     protected static ?string $pollingInterval = null;
+    protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
     {
