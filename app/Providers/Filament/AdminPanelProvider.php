@@ -39,7 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\LaPalomaStats::class,
                 \App\Filament\Widgets\DailyVisitsChart::class,
                 \App\Filament\Widgets\VisitsByCountryChart::class,
-            ])
+            ], true)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
