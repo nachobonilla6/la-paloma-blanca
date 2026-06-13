@@ -38,6 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\LaPalomaStats::class,
+                \App\Filament\Widgets\GoogleAnalyticsWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
