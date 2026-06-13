@@ -39,6 +39,8 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
                 \App\Filament\Widgets\LaPalomaStats::class,
+                \App\Filament\Widgets\DailyVisitsChart::class,
+                \App\Filament\Widgets\VisitsByCountryChart::class,
                 \App\Filament\Widgets\GoogleAnalyticsWidget::class,
             ])
             ->middleware([
