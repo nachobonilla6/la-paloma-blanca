@@ -1,8 +1,8 @@
 {
-  "name": "william",
+  "name": "la-paloma-blanca",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Beachfront condo for sale at La Paloma Blanca, South Jacó, Costa Rica",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^4.22.2"
   }
 }
