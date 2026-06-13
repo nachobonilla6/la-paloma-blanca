@@ -9,6 +9,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class LaPalomaStats extends BaseWidget
 {
     protected static ?string $pollingInterval = null;
+    protected int | string | array $columnSpan = 'full';
 
     protected function getStats(): array
     {
