@@ -1,12 +1,30 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const publicDir = path.resolve(__dirname, 'public');
 const photosDir = path.resolve(__dirname, 'photos');
+
+// Security headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many requests, please try again later.'
+});
+app.use(limiter);
 
 // Debug middleware
 app.use((req, res, next) => {
@@ -17,14 +35,19 @@ app.use((req, res, next) => {
 // Serve everything from public/ first (CSS, JS, etc.)
 app.use(express.static(publicDir));
 
-// Photos route - explicit middleware for /photos/*
+// Photos route - safe from path traversal
 app.use('/photos', (req, res, next) => {
-  // Remove /photos/ prefix
   const relativePath = req.url.replace(/^\//, '');
-  const filePath = path.join(photosDir, relativePath);
-  console.log(`  Trying photos: ${filePath} (exists: ${fs.existsSync(filePath)})`);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
+  const fullPath = path.resolve(photosDir, relativePath);
+
+  // Ensure resolved path stays inside photosDir
+  if (!fullPath.startsWith(photosDir)) {
+    return res.status(403).send('Forbidden');
+  }
+
+  console.log(`  Trying photos: ${fullPath} (exists: ${fs.existsSync(fullPath)})`);
+  if (fs.existsSync(fullPath)) {
+    res.sendFile(fullPath);
   } else {
     next();
   }
