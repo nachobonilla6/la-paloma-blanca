@@ -14,8 +14,8 @@ class PropertyContentResource extends Resource
 {
     protected static ?string $model = PropertyContent::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $navigationGroup = 'La Paloma Blanca';
-    protected static ?string $navigationLabel = 'Contenido del Sitio';
+    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationLabel = 'Site Content';
     protected static ?string $slug = 'la-paloma/contenido';
 
     public static function form(Form $form): Form
