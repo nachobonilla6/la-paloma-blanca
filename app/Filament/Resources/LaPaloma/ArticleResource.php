@@ -14,25 +14,26 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
-    protected static ?string $navigationGroup = 'Property';
+    protected static ?string $navigationGroup = '';
     protected static ?string $navigationLabel = 'Articles';
     protected static ?string $slug = 'la-paloma/articulos';
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('source')
-                    ->label('Source')
+                    ->label('Fuente')
                     ->placeholder('National Geographic')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('title')
-                    ->label('Title')
+                    ->label('Título')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->label('Description')
+                    ->label('Descripción')
                     ->rows(2),
                 Forms\Components\TextInput::make('url')
                     ->label('URL')
@@ -40,10 +41,10 @@ class ArticleResource extends Resource
                     ->required()
                     ->maxLength(500),
                 Forms\Components\TextInput::make('sort_order')
-                    ->label('Order')
+                    ->label('Orden')
                     ->numeric()
                     ->default(0),
-                Forms\Components\Toggle::make('is_active')->label('Active')->default(true),
+                Forms\Components\Toggle::make('is_active')->label('Activo')->default(true),
             ]);
     }
 
@@ -58,6 +59,12 @@ class ArticleResource extends Resource
             ])
             ->defaultSort('sort_order')
             ->actions([
+                Tables\Actions\Action::make('open_url')
+                    ->label('')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->color('primary')
+                    ->url(fn ($record) => $record->url)
+                    ->openUrlInNewTab(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

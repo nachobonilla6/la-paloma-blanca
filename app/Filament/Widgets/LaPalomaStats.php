@@ -9,28 +9,29 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class LaPalomaStats extends BaseWidget
 {
     protected static ?string $pollingInterval = null;
-    protected int | string | array $columnSpan = 'full';
 
     protected function getStats(): array
     {
-        $hoy = PageView::whereDate('visited_at', today())->count();
-        $total = PageView::count();
-        $unicos = PageView::distinct('ip')->count('ip');
+        $totalViews = PageView::count();
+        $todayViews = PageView::whereDate('visited_at', today())->count();
+        $totalCountries = PageView::whereNotNull('country')
+            ->selectRaw('COUNT(DISTINCT country) as c')
+            ->value('c') ?? 0;
 
         return [
-            Stat::make('Total Visits', $total)
+            Stat::make('Total Visits', number_format($totalViews))
                 ->description('All time page views')
-                ->descriptionIcon('heroicon-m-eye')
+                ->descriptionIcon('heroicon-o-eye')
                 ->color('info'),
 
-            Stat::make('Visits Today', $hoy)
+            Stat::make('Visits Today', number_format($todayViews))
                 ->description('Views in the last 24 hours')
-                ->descriptionIcon('heroicon-m-clock')
-                ->color('success'),
+                ->descriptionIcon('heroicon-o-clock')
+                ->color($todayViews > 0 ? 'success' : 'gray'),
 
-            Stat::make('Unique Visitors', $unicos)
-                ->description('Distinct IP addresses')
-                ->descriptionIcon('heroicon-m-users')
+            Stat::make('Countries', number_format($totalCountries))
+                ->description('Unique visitor countries')
+                ->descriptionIcon('heroicon-o-globe-alt')
                 ->color('warning'),
         ];
     }

@@ -6,11 +6,9 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,6 +24,10 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('panel')
             ->login()
+            ->renderHook(
+                'panels::head.end',
+                fn () => '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />'
+            )
             ->colors([
                 'primary' => Color::Emerald,
             ])
@@ -38,12 +40,10 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Pages\BeachPage::class,
                 \App\Filament\Pages\ContactPage::class,
                 \App\Filament\Pages\SeoPage::class,
+                \App\Filament\Pages\GalleryPage::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 \App\Filament\Widgets\LaPalomaStats::class,
-                \App\Filament\Widgets\DailyVisitsChart::class,
-                \App\Filament\Widgets\VisitsByCountryChart::class,
             ], true)
             ->middleware([
                 EncryptCookies::class,

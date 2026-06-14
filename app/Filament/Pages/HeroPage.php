@@ -3,19 +3,26 @@
 namespace App\Filament\Pages;
 
 use App\Models\LaPaloma\PropertyContent;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
-class HeroPage extends Page
+class HeroPage extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationLabel = 'Hero';
     protected static ?string $slug = 'site/hero';
     protected static ?string $title = 'Hero Section';
     protected static string $view = 'filament.pages.hero';
+    protected static ?int $navigationSort = 1;
 
     public ?array $data = [];
 
@@ -29,18 +36,39 @@ class HeroPage extends Page
     {
         return $form
             ->schema([
-                SpatieMediaLibraryFileUpload::make('hero')
+                FileUpload::make('hero_image')
                     ->label('Hero Background Image')
-                    ->collection('hero')
                     ->image()
-                    ->imagePreviewHeight('200')
+                    ->disk('public_html')
+                    ->directory('lp-photos')
+                    ->imagePreviewHeight('250')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->columnSpanFull(),
-                TextInput::make('hero_badge')->label('Badge')->maxLength(255),
-                TextInput::make('hero_title')->label('Title')->maxLength(255),
-                TextInput::make('hero_accent')->label('Accent text')->maxLength(255),
-                TextInput::make('hero_subtitle')->label('Subtitle')->maxLength(255),
-                Textarea::make('hero_tagline')->label('Tagline')->rows(2),
+                Grid::make(2)
+                    ->schema([
+                        TextInput::make('hero_badge')
+                            ->label('Badge')
+                            ->maxLength(255)
+                            ->prefixIcon('heroicon-o-tag'),
+                        TextInput::make('hero_subtitle')
+                            ->label('Subtitle')
+                            ->maxLength(255)
+                            ->prefixIcon('heroicon-o-map-pin'),
+                    ]),
+                Grid::make(2)
+                    ->schema([
+                        TextInput::make('hero_title')
+                            ->label('Title')
+                            ->maxLength(255)
+                            ->prefixIcon('heroicon-o-bold'),
+                        TextInput::make('hero_accent')
+                            ->label('Accent text')
+                            ->maxLength(255)
+                            ->prefixIcon('heroicon-o-star'),
+                    ]),
+                Textarea::make('hero_tagline')
+                    ->label('Tagline')
+                    ->rows(2),
             ])
             ->model(PropertyContent::class)
             ->statePath('data');
@@ -49,25 +77,11 @@ class HeroPage extends Page
     public function save(): void
     {
         $content = PropertyContent::firstOrCreate([], ['is_active' => true]);
-        $state = $this->form->getState();
-        
-        // Separar los campos de Spatie (colecciones) de los campos normales
-        $normalFields = collect($state)->except(['hero'])->toArray();
-        $content->update($normalFields);
-        
-        // Spatie media library guarda automáticamente cuando se usa el uploader
-        // con el modelo correcto en el formulario
-        
-        $this->notify('success', 'Hero section updated!');
-    }
+        $content->update($this->form->getState());
 
-    protected function getFormActions(): array
-    {
-        return [
-            \Filament\Actions\Action::make('save')
-                ->label('Save')
-                ->submit('save')
-                ->keyBindings(['mod+s']),
-        ];
+        Notification::make()
+            ->title('Hero section updated!')
+            ->success()
+            ->send();
     }
 }

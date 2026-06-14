@@ -59,7 +59,7 @@
   </nav>
 
   <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
+  <section class="hero" id="hero"@if($content->hero_image) style="background-image: url('{{ asset($content->hero_image) }}'); background-size: cover; background-position: center;"@endif>
     <div class="hero-overlay"></div>
     <div class="hero-bg-scroll"></div>
     <div class="hero-content">
@@ -83,7 +83,7 @@
     <div class="container">
       <div class="section-header animate-on-scroll">
         <span class="section-label">The Property</span>
-        <h2>Beachfront Condo for Sale</h2>
+        <h2>{{ $content->details_title ?? 'Beachfront Condo for Sale' }}</h2>
         @if($content->details_intro)
           <p class="section-intro">{{ $content->details_intro }}</p>
         @endif
@@ -117,7 +117,7 @@
           <a href="#contact" class="btn btn-primary">Schedule a Viewing</a>
         </div>
         <div class="details-image animate-on-scroll">
-          <img src="{{ $images[0]->image_path ?? '/la-paloma/photos/pool.jpeg' }}" alt="Pool area at La Paloma Blanca" />
+          <img src="{{ asset($content->details_image ?? $images[0]->image_path ?? '/lp-photos/pool.jpeg') }}" alt="Pool area at La Paloma Blanca" />
         </div>
       </div>
 
@@ -211,7 +211,7 @@
       <div class="gallery-grid" id="galleryGrid">
         @forelse($images as $img)
         <div class="gallery-item animate-on-scroll">
-          <img src="{{ $img->image_path }}" alt="{{ $img->alt_text ?? 'Gallery image' }}" loading="lazy" />
+          <img src="{{ asset($img->image_path) }}" alt="{{ $img->alt_text ?? 'Gallery image' }}" loading="lazy" />
         </div>
         @empty
         <p style="grid-column:1/-1;text-align:center;color:#888;">Gallery images coming soon.</p>
@@ -265,11 +265,12 @@
           @if($content->beach_text_2)<p>{{ $content->beach_text_2 }}</p>@endif
         </div>
         @endif
+               @if($content->beach_image_1 || $content->beach_image_2)
         <div class="beach-images animate-on-scroll">
-          <img src="{{ $images[2]->image_path ?? $images[0]->image_path ?? '' }}" alt="Sunset at South Jacó beach" />
-          <img src="{{ $images[3]->image_path ?? $images[1]->image_path ?? '' }}" alt="Street leading to the beach" />
+          @if($content->beach_image_1) <img src="{{ asset($content->beach_image_1) }}" alt="Sunset at South Jacó beach" /> @endif
+          @if($content->beach_image_2) <img src="{{ asset($content->beach_image_2) }}" alt="Street leading to the beach" /> @endif
         </div>
-      </div>
+        @endif      </div>
 
       @if(!empty($beachHighlights))
       <div class="beach-highlights animate-on-scroll">

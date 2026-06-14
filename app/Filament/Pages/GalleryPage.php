@@ -4,22 +4,16 @@ namespace App\Filament\Pages;
 
 use App\Models\LaPaloma\GalleryImage;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
-class GalleryPage extends Page implements HasTable
+class GalleryPage extends Page implements HasForms
 {
-    use InteractsWithTable;
+    use InteractsWithForms;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationLabel = 'Photo Gallery';
@@ -28,78 +22,122 @@ class GalleryPage extends Page implements HasTable
     protected static string $view = 'filament.pages.gallery';
     protected static ?int $navigationSort = 4;
 
-    public function table(Table $table): Table
+    public ?array $data = [];
+    public $photos = [];
+
+    public function mount(): void
     {
-        return $table
-            ->query(GalleryImage::query())
-            ->columns([
-                ImageColumn::make('image_path')
-                    ->label('Photo')
-                    ->size(80)
-                    ->disk('public_html'),
-                TextColumn::make('alt_text')
-                    ->label('Description')
-                    ->limit(30),
-                TextColumn::make('sort_order')
-                    ->label('Order')
-                    ->sortable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
-            ])
-            ->defaultSort('sort_order')
-            ->reorderable('sort_order')
-            ->headerActions([
-                CreateAction::make()
-                    ->label('Add Image')
-                    ->icon('heroicon-o-plus')
-                    ->color('success')
-                    ->form([
-                        FileUpload::make('image_path')
-                            ->label('Image')
-                            ->disk('public_html')
-                            ->directory('gallery')
-                            ->image()
-                            ->imagePreviewHeight('200')
-                            ->required(),
-                        TextInput::make('alt_text')
-                            ->label('Description')
-                            ->maxLength(255),
-                        TextInput::make('sort_order')
-                            ->label('Order')
-                            ->numeric()
-                            ->default(0),
-                        Toggle::make('is_active')
-                            ->label('Active')
-                            ->default(true),
-                    ])
-                    ->mutateFormDataUsing(function (array $data): array {
-                        if (isset($data['image_path']) && is_string($data['image_path'])) {
-                            $data['image_path'] = 'gallery/' . $data['image_path'];
-                        }
-                        return $data;
-                    }),
-            ])
-            ->actions([
-                EditAction::make()
-                    ->form([
-                        FileUpload::make('image_path')
-                            ->label('Image')
-                            ->disk('public_html')
-                            ->directory('gallery')
-                            ->image()
-                            ->imagePreviewHeight('200'),
-                        TextInput::make('alt_text')
-                            ->label('Description')
-                            ->maxLength(255),
-                        TextInput::make('sort_order')
-                            ->label('Order')
-                            ->numeric()
-                            ->default(0),
-                        Toggle::make('is_active')
-                            ->label('Active')
-                            ->default(true),
-                    ]),
-                DeleteAction::make(),
+        $this->loadPhotos();
+    }
+
+    public function loadPhotos(): void
+    {
+        $this->photos = GalleryImage::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->toArray();
+    }
+
+    public function uploadPhotos(): void
+    {
+        $files = $this->form->getState()['new_photos'] ?? [];
+
+        if (empty($files)) {
+            Notification::make()
+                ->title('Select at least one file')
+                ->warning()
+                ->send();
+            return;
+        }
+
+        $maxOrder = GalleryImage::max('sort_order') ?? 0;
+
+        foreach ($files as $file) {
+            GalleryImage::create([
+                'image_path' => '/' . $file,
+                'sort_order' => ++$maxOrder,
+                'is_active' => true,
             ]);
+        }
+
+        $this->form->fill();
+        $this->loadPhotos();
+
+        Notification::make()
+            ->title(count($files) . ' photo(s) uploaded')
+            ->success()
+            ->send();
+    }
+
+    public function deletePhoto(int $id): void
+    {
+        $photo = GalleryImage::find($id);
+        if ($photo) {
+            Storage::disk('public_html')->delete($photo->image_path);
+            $photo->delete();
+            $this->loadPhotos();
+            Notification::make()
+                ->title('Photo deleted')
+                ->success()
+                ->send();
+        }
+    }
+
+    public function moveUp(int $id): void
+    {
+        $current = GalleryImage::find($id);
+        if (!$current) return;
+
+        $prev = GalleryImage::where('sort_order', '<', $current->sort_order)
+            ->orderBy('sort_order', 'desc')
+            ->first();
+
+        if ($prev) {
+            $temp = $current->sort_order;
+            $current->update(['sort_order' => $prev->sort_order]);
+            $prev->update(['sort_order' => $temp]);
+            $this->loadPhotos();
+        }
+    }
+
+    public function moveDown(int $id): void
+    {
+        $current = GalleryImage::find($id);
+        if (!$current) return;
+
+        $next = GalleryImage::where('sort_order', '>', $current->sort_order)
+            ->orderBy('sort_order', 'asc')
+            ->first();
+
+        if ($next) {
+            $temp = $current->sort_order;
+            $current->update(['sort_order' => $next->sort_order]);
+            $next->update(['sort_order' => $temp]);
+            $this->loadPhotos();
+        }
+    }
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                FileUpload::make('new_photos')
+                    ->label('')
+                    ->disk('public_html')
+                    ->directory('gallery')
+                    ->multiple()
+                    ->image()
+                    ->imagePreviewHeight('150')
+                    ->panelLayout('grid')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                    ->maxFiles(20)
+                    ->columnSpanFull(),
+            ])
+            ->statePath('data');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [];
     }
 }

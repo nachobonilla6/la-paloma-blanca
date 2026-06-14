@@ -3,18 +3,26 @@
 namespace App\Filament\Pages;
 
 use App\Models\LaPaloma\PropertyContent;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
-class ContactPage extends Page
+class ContactPage extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static ?string $navigationIcon = 'heroicon-o-phone';
     protected static ?string $navigationLabel = 'Contact';
+    protected static ?string $navigationGroup = '';
     protected static ?string $slug = 'site/contact';
     protected static ?string $title = 'Contact Section';
     protected static string $view = 'filament.pages.hero';
+    protected static ?int $navigationSort = 7;
 
     public ?array $data = [];
 
@@ -28,12 +36,33 @@ class ContactPage extends Page
     {
         return $form
             ->schema([
-                TextInput::make('contact_title')->label('Title')->maxLength(255),
-                Textarea::make('contact_intro')->label('Intro')->rows(2),
-                TextInput::make('contact_email')->label('Email')->email(),
-                TextInput::make('contact_phone')->label('Phone'),
-                TextInput::make('contact_whatsapp')->label('WhatsApp'),
-                TextInput::make('owner_name')->label('Owner name'),
+                Grid::make(2)
+                    ->schema([
+                        TextInput::make('contact_title')
+                            ->label('Title')
+                            ->maxLength(255)
+                            ->prefixIcon('heroicon-o-bold'),
+                        TextInput::make('owner_name')
+                            ->label('Owner name')
+                            ->prefixIcon('heroicon-o-user'),
+                    ]),
+                Textarea::make('contact_intro')
+                    ->label('Intro')
+                    ->rows(2)
+                    ,
+                Grid::make(3)
+                    ->schema([
+                        TextInput::make('contact_email')
+                            ->label('Email')
+                            ->email()
+                            ->prefixIcon('heroicon-o-envelope'),
+                        TextInput::make('contact_phone')
+                            ->label('Phone')
+                            ->prefixIcon('heroicon-o-phone'),
+                        TextInput::make('contact_whatsapp')
+                            ->label('WhatsApp')
+                            ->prefixIcon('heroicon-o-chat-bubble-oval-left-ellipsis'),
+                    ]),
             ])
             ->model(PropertyContent::class)
             ->statePath('data');
@@ -43,16 +72,10 @@ class ContactPage extends Page
     {
         $content = PropertyContent::firstOrCreate([], ['is_active' => true]);
         $content->update($this->form->getState());
-        $this->notify('success', 'Contact section updated!');
-    }
 
-    protected function getFormActions(): array
-    {
-        return [
-            \Filament\Actions\Action::make('save')
-                ->label('Save')
-                ->submit('save')
-                ->keyBindings(['mod+s']),
-        ];
+        Notification::make()
+            ->title('Contact Section updated!')
+            ->success()
+            ->send();
     }
 }
