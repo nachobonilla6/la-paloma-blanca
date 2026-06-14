@@ -22,7 +22,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('admin')
-            ->path('panel')
+            ->path('dashboard')
+
             ->login()
             ->renderHook(
                 'panels::head.end',

@@ -7,7 +7,8 @@ Route::get('/', [App\Http\Controllers\LaPalomaController::class, 'index']);
 Route::get('/force-login', function (Illuminate\Http\Request $request) {
     if (Illuminate\Support\Facades\Auth::attempt(['email' => 'admin@controlcenter.com', 'password' => 'admin123'])) {
         $request->session()->regenerate();
-        return redirect('/panel');
+        return redirect('/dashboard');
+
     }
     return 'Login failed';
 })->middleware('web');
