@@ -77,9 +77,7 @@ class TwoFactorPage extends Page implements HasForms
         if ($valid) {
             session(['2fa_passed' => true]);
             Notification::make()->title('Verified!')->success()->send();
-            $this->redirect('/dashboard');
-
-
+            $this->redirect('/panel');
         } else {
             Notification::make()->title('Invalid code')->danger()->send();
         }

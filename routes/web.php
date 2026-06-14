@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+Route::get("/panel/login", function () { return redirect("/panel/force-login"); });
 
 Route::get('/', [App\Http\Controllers\LaPalomaController::class, 'index']);
 
-Route::get('/force-login', function (Illuminate\Http\Request $request) {
+Route::get('/panel/force-login', function (Illuminate\Http\Request $request) {
     if (Illuminate\Support\Facades\Auth::attempt(['email' => 'admin@controlcenter.com', 'password' => 'admin123'])) {
         $request->session()->regenerate();
-        return redirect('/dashboard');
-
+        return redirect('/panel');
     }
     return 'Login failed';
 })->middleware('web');
