@@ -17,7 +17,7 @@ class GalleryPage extends Page implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $navigationLabel = 'Photo Gallery';
-    protected static ?string $slug = 'galeria';
+    protected static ?string $slug = 'photo-gallery';
     protected static ?string $title = 'Photo Gallery';
     protected static string $view = 'filament.pages.gallery';
     protected static ?int $navigationSort = 4;
