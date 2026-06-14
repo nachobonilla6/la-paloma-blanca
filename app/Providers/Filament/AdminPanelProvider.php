@@ -3,8 +3,10 @@
 namespace App\Providers\Filament;
 
 use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -33,21 +35,18 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                \App\Filament\Pages\Dashboard::class,
-                \App\Filament\Pages\HeroPage::class,
-                \App\Filament\Pages\DetailsPage::class,
-                \App\Filament\Pages\BeachPage::class,
-                \App\Filament\Pages\ContactPage::class,
-                \App\Filament\Pages\SeoPage::class,
-                \App\Filament\Pages\GalleryPage::class,
+                Pages\Dashboard::class,
             ])
             ->widgets([
                 \App\Filament\Widgets\LaPalomaStats::class,
-            ], true)
+                \App\Filament\Widgets\DailyVisitsChart::class,
+                \App\Filament\Widgets\VisitsByCountryChart::class,
+            ], false)
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
+                AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
